@@ -22,17 +22,8 @@
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+        android:indeterminateTint="@color/orange_bright"
+        android:layout_marginTop="50dp">
     </ProgressBar>
-
-    <!--<TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="To Do App"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp">
-    </TextView>-->
 
 </LinearLayout>
