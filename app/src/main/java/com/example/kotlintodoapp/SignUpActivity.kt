@@ -34,12 +34,12 @@ class SignUpActivity : AppCompatActivity() {
             signUp()
         }
 
-        binding.regSignInTextview.setOnClickListener {
-            goToSignActivity()
+        binding.gotoSignInTextview.setOnClickListener {
+            goToSignInActivity()
         }
     }
 
-    private fun goToSignActivity() {
+    private fun goToSignInActivity() {
         val intent = Intent(this, SignInActivity::class.java)
         startActivity(intent)
     }

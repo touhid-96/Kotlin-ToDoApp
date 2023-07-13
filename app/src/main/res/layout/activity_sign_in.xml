@@ -38,11 +38,11 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:padding="10dp"
-        android:hint="E-mail"
+        android:hint="Type you email"
         android:inputType="textEmailAddress"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:background="@drawable/background_edittext">
@@ -57,10 +57,10 @@
         android:layout_marginLeft="10dp"
         android:padding="10dp"
         android:hint="Password"
-        android:inputType="textPassword"
+        android:inputType="numberPassword"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:background="@drawable/background_edittext">
@@ -102,7 +102,7 @@
         </TextView>
 
         <TextView
-            android:id="@+id/login_sign_up_textview"
+            android:id="@+id/goto_sign_up_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
