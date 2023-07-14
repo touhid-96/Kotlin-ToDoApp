@@ -1,12 +1,10 @@
 package com.example.kotlintodoapp
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.TextView
 import android.widget.Toast
 import com.example.kotlintodoapp.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -15,7 +13,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var dialog: Dialog
+    private lateinit var progressDialog: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -25,10 +23,12 @@ class SignUpActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        //custom progress dialogBox
+        /**
+         * Custom Progress Dialog
+         */
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setView(R.layout.progress_dialog)
-        dialog = dialogBuilder.create()
+        progressDialog = dialogBuilder.create()
 
         binding.signUpButton.setOnClickListener {
             signUp()
@@ -52,26 +52,32 @@ class SignUpActivity : AppCompatActivity() {
         if (email.isEmpty()) {
             Toast.makeText(this, "Please give us your email!", Toast.LENGTH_SHORT).show()
         } else if (password.isEmpty()) {
-            Toast.makeText(this, "We need a password to create an account!", Toast.LENGTH_SHORT).show()
-        } else if (confirmPassword.isEmpty()) {
-            Toast.makeText(this, "Please re-type your password again!", Toast.LENGTH_SHORT).show()
-        } else if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "Please type a password!", Toast.LENGTH_SHORT).show()
+        } else if (password.length < 6) {
+            Toast.makeText(this, "Password must be of 6 digits or more!", Toast.LENGTH_SHORT).show()
+        }else if (confirmPassword.isEmpty()) {
+            Toast.makeText(this, "Please confirm the password!", Toast.LENGTH_SHORT).show()
+        } else if (password != confirmPassword) {
             Toast.makeText(this, "Password didn't match!", Toast.LENGTH_SHORT).show()
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Please type a valid email address!", Toast.LENGTH_SHORT).show()
         } else {
-            dialog.setCancelable(false)
+            progressDialog.setCancelable(false)
             showProgressDialog(true)
 
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
                     showProgressDialog(false)
-                    dialog.setCancelable(true)
+                    progressDialog.setCancelable(true)
+
                     Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                 } else {
+                    showProgressDialog(false)
+                    progressDialog.setCancelable(true)
+
                     Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
                 }
             }
@@ -79,7 +85,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun showProgressDialog(show: Boolean) {
-        if (show) dialog.show()
-        else dialog.dismiss()
+        if (show) progressDialog.show()
+        else progressDialog.dismiss()
     }
 }

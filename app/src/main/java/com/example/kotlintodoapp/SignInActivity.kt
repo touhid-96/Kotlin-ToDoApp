@@ -1,7 +1,6 @@
 package com.example.kotlintodoapp
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +12,7 @@ class SignInActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivitySignInBinding
-    private lateinit var dialog: Dialog
+    private lateinit var progressDialog: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignInBinding.inflate(layoutInflater)
@@ -23,10 +22,12 @@ class SignInActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        //custom progress dialogBox
+        /**
+         * Custom Progress Dialog
+         */
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setView(R.layout.progress_dialog)
-        dialog = dialogBuilder.create()
+        progressDialog = dialogBuilder.create()
 
         binding.signInButton.setOnClickListener {
             signIn()
@@ -42,22 +43,27 @@ class SignInActivity : AppCompatActivity() {
         val password = binding.loginPassEdittext.text.toString()
 
         if (email.isEmpty()) {
-            Toast.makeText(this, "Please write your email!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please type your email!", Toast.LENGTH_SHORT).show()
         } else if (password.isEmpty()) {
-            Toast.makeText(this, "We need your password to log you in", Toast.LENGTH_SHORT).show()
-        } else {
-            dialog.setCancelable(false)
+            Toast.makeText(this, "Please type your password!", Toast.LENGTH_SHORT).show()
+        } else if (email.isEmpty() && password.isEmpty()) {
+            Toast.makeText(this, "Please type your email & password!", Toast.LENGTH_SHORT).show()
+        }else {
+            progressDialog.setCancelable(false)
             showProgressDialog(true)
 
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
                     showProgressDialog(false)
-                    dialog.setCancelable(true)
+                    progressDialog.setCancelable(true)
                     Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                 } else {
+                    showProgressDialog(false)
+                    progressDialog.setCancelable(true)
+
                     Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
                 }
             }
@@ -70,7 +76,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun showProgressDialog(show: Boolean) {
-        if (show) dialog.show()
-        else dialog.dismiss()
+        if (show) progressDialog.show()
+        else progressDialog.dismiss()
     }
 }
