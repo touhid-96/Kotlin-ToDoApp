@@ -40,6 +40,9 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
     private lateinit var adapter: ToDoAdapter
     private lateinit var mList: MutableList<ToDoData>
 
+    //private lateinit var editTask: String
+    private lateinit var taskID: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingHome = ActivityHomeBinding.inflate(layoutInflater)
@@ -72,7 +75,7 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
         popupDialogEditTask = Dialog(this)
         popupDialogEditTask.setContentView(R.layout.layout_edit_todo_popup_dialog)
         editTaskCancelButton = popupDialogEditTask.findViewById(R.id.popup_cancel_button)
-        editTaskOkButton = popupDialogEditTask.findViewById(R.id.popup_add_button)
+        editTaskOkButton = popupDialogEditTask.findViewById(R.id.popup_ok_button)
         editTaskDetail = popupDialogEditTask.findViewById(R.id.popup_task_detail_edittext)
 
         bindingHome.signOutButton.setOnClickListener {
@@ -99,7 +102,8 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
         }
 
         editTaskOkButton.setOnClickListener {
-            editToDoTask()
+            //Toast.makeText(this, "$editTask $taskID", Toast.LENGTH_SHORT).show()
+            editToDoTask(taskID)
         }
 
         bindingHome.mRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
@@ -115,8 +119,39 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
         getDataFromFirebase()
     }
 
-    private fun editToDoTask() {
+    private fun editToDoTask(taskID: String) {
+        val taskDetail = editTaskDetail.text.toString()
+        if (taskDetail.isEmpty()) {
+            Toast.makeText(this, "Empty task not allowed!", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            popupDialogEditTask.dismiss()
+            editTaskDetail.text = null
+            progressDialog.setCancelable(false)
+            showProgressDialog(true)
 
+            val map = HashMap<String, Any>()
+            map[taskID] = taskDetail
+            print("---------------------------------------------------------------------------------------" + map)
+            dbRef.updateChildren(map).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Thread.sleep(500) //lets delay for a bit -_-
+
+                    showProgressDialog(false)
+                    progressDialog.setCancelable(true)
+
+                    Toast.makeText(this, "Task changed!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Thread.sleep(500) //lets delay for a bit -_-
+
+                    showProgressDialog(false)
+                    progressDialog.setCancelable(true)
+
+                    Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     private fun getDataFromFirebase() {
@@ -154,7 +189,7 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
 
             dbRef.push().setValue(todoTask).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Thread.sleep(1000) //lets delay for a bit -_-
+                    Thread.sleep(500) //lets delay for a bit -_-
 
                     showProgressDialog(false)
                     progressDialog.setCancelable(true)
@@ -162,7 +197,7 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
                     Toast.makeText(this, "Successfully Saved!", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    Thread.sleep(1000) //lets delay for a bit -_-
+                    Thread.sleep(500) //lets delay for a bit -_-
 
                     showProgressDialog(false)
                     progressDialog.setCancelable(true)
@@ -216,6 +251,10 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
          * (1) get the data (task text, taskID)
          * (2) show edit_todo_popup_dialog with the task string on text field
          */
+        editTaskDetail.setText(toDoData._task)
+        popupDialogEditTask.show()
 
+        //editTask = toDoData._task
+        taskID = toDoData._taskID
     }
 }

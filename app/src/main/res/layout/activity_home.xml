@@ -8,42 +8,25 @@
     android:background="@color/black"
     tools:context=".HomeActivity">
 
-    <LinearLayout
-        android:id="@+id/animation"
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!--<com.airbnb.lottie.LottieAnimationView
-            android:layout_gravity="start"
-            android:layout_width="match_parent"
-            android:layout_height="190dp"
-            android:layout_weight="1"
-            app:lottie_autoPlay="true"
-            app:lottie_cacheComposition="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/todo_list"
-            app:lottie_speed="0.5">
-        </com.airbnb.lottie.LottieAnimationView>-->
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="To Do List"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="@color/orange_bright"
-            android:textAlignment="center">
-        </TextView>
-
-    </LinearLayout>
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
+        android:text="To Do List"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/orange_bright"
+        android:textAlignment="center">
+    </TextView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/m_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/animation"
+        android:layout_below="@+id/title"
+        android:layout_above="@+id/sign_out_button"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp">
@@ -64,7 +47,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:text="Add"
         android:textStyle="bold"
         android:textAllCaps="true"
