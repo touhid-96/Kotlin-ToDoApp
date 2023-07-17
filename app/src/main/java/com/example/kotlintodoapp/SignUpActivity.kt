@@ -27,7 +27,7 @@ class SignUpActivity : AppCompatActivity() {
          * Custom Progress Dialog
          */
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setView(R.layout.progress_dialog)
+        dialogBuilder.setView(R.layout.layout_progress_dialog)
         progressDialog = dialogBuilder.create()
 
         binding.signUpButton.setOnClickListener {
