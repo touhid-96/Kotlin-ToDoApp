@@ -7,7 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import com.google.firebase.auth.FirebaseAuth
 
-private const val SPLASH_SCREEN_DELAY: Long = 3000 //value is in milliseconds
+private const val SPLASH_SCREEN_DELAY: Long = 2000 //value is in milliseconds
 
 class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth

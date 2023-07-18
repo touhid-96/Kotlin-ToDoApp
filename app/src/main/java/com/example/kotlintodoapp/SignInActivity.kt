@@ -86,4 +86,8 @@ class SignInActivity : AppCompatActivity() {
         if (show) progressDialog.show()
         else progressDialog.dismiss()
     }
+
+    override fun onBackPressed() {
+        finishAffinity()
+    }
 }
