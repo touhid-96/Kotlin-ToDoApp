@@ -19,15 +19,11 @@ class MainActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (auth.currentUser != null) {
-                println("---------------------------------- User : "+auth.currentUser)
-
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
-                finish()
             } else {
                 val intent = Intent(this, SignInActivity::class.java)
                 startActivity(intent)
-                finish()
             }
         }, SPLASH_SCREEN_DELAY)
     }

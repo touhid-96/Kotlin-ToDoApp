@@ -40,7 +40,6 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
     private lateinit var adapter: ToDoAdapter
     private lateinit var mList: MutableList<ToDoData>
 
-    //private lateinit var editTask: String
     private lateinit var taskID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +131,6 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
 
             val map = HashMap<String, Any>()
             map[taskID] = taskDetail
-            print("---------------------------------------------------------------------------------------" + map)
             dbRef.updateChildren(map).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Thread.sleep(500) //lets delay for a bit -_-
@@ -250,6 +248,7 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
          * steps:
          * (1) get the data (task text, taskID)
          * (2) show edit_todo_popup_dialog with the task string on text field
+         * (3) get the _taskID of the selected task from ToDoData - because we need the task ID to edit the specific task
          */
         editTaskDetail.setText(toDoData._task)
         popupDialogEditTask.show()

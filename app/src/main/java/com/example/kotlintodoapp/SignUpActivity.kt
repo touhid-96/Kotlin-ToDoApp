@@ -70,10 +70,17 @@ class SignUpActivity : AppCompatActivity() {
                     showProgressDialog(false)
                     progressDialog.setCancelable(true)
 
-                    Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()
 
+                    /**
+                     * when user sign up and login we need to clear the back trace of signUp activity
+                     * purpose : onClick android 'Back' button, user should not be back to the signUp activity again
+                     * rather the 'Back' button should exit the app from the homeActivity
+                     */
                     val intent = Intent(this, HomeActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
+                    finish()
                 } else {
                     showProgressDialog(false)
                     progressDialog.setCancelable(true)
