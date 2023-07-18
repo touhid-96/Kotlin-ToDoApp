@@ -5,10 +5,13 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlintodoapp.databinding.ActivityHomeBinding
 import com.example.kotlintodoapp.utils.ToDoAdapter
@@ -42,12 +45,18 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
 
     private lateinit var taskID: String
 
+    private lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingHome = ActivityHomeBinding.inflate(layoutInflater)
         val view = bindingHome.root
         //setContentView(R.layout.activity_home)
         setContentView(view)
+
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "To Do List"
 
         auth = FirebaseAuth.getInstance()
         dbRef = FirebaseDatabase.getInstance().reference.child("Tasks").child(auth.currentUser?.uid.toString())
@@ -76,10 +85,6 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
         editTaskCancelButton = popupDialogEditTask.findViewById(R.id.popup_cancel_button)
         editTaskOkButton = popupDialogEditTask.findViewById(R.id.popup_ok_button)
         editTaskDetail = popupDialogEditTask.findViewById(R.id.popup_task_detail_edittext)
-
-        bindingHome.signOutButton.setOnClickListener {
-            signOut()
-        }
 
         bindingHome.addNewTaskButton.setOnClickListener {
             popupDialogAddTask.setCancelable(false)
@@ -210,6 +215,7 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
         auth.signOut()
 
         val intent = Intent(this, SignInActivity::class.java)
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         finish()
     }
@@ -255,5 +261,19 @@ class HomeActivity : AppCompatActivity(), ToDoAdapter.ToDoAdapterClicksInterface
 
         //editTask = toDoData._task
         taskID = toDoData._taskID
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_options, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        if (item.itemId == R.id.menu_sign_out) {
+            signOut()
+        }
+        return true
     }
 }

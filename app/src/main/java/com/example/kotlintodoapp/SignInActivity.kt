@@ -56,15 +56,15 @@ class SignInActivity : AppCompatActivity() {
                 if (it.isSuccessful) {
                     showProgressDialog(false)
                     progressDialog.setCancelable(true)
-                    //Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
 
                     /**
+                     * call finish()
                      * when user sign in and login we need to clear the back trace of signIn activity
                      * purpose : onClick android 'Back' button, user should not be back to the signIn activity again
                      * rather the 'Back' button should exit the app from the homeActivity
                      */
                     val intent = Intent(this, HomeActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                     finish()
                 } else {

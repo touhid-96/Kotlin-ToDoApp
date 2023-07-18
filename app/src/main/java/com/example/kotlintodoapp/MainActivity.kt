@@ -21,9 +21,11 @@ class MainActivity : AppCompatActivity() {
             if (auth.currentUser != null) {
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
+                finish()
             } else {
                 val intent = Intent(this, SignInActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }, SPLASH_SCREEN_DELAY)
     }
