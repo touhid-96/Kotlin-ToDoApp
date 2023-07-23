@@ -22,7 +22,8 @@ Its a simple "To Do" demo application build using Firebase authentication and Re
 - Simply Run using any device (Physical or Virtual)
 
 ## Technology used:
-- Java : jbr-17 (JetBrains Runtime version 17.0.6)
+- JDK : jbr-17 (JetBrains Runtime version 17.0.6)
+- Language : Kotlin
 - IDE : Android Studio Flamingo | 2022.2.1 Patch 2
 - Backend : Google Firebase (Authentication, Realtime Database)
 
